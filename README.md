@@ -1,1 +1,1 @@
-##A Console App For Tracking Personal Finances
+A Console App For Tracking Personal Finances
