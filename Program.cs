@@ -61,8 +61,18 @@ namespace PersonalFinanceTracker
         {
             Console.Write("Enter description: ");
             var description = Console.ReadLine();
-            Console.Write("Enter amount: ");
-            var amount = decimal.Parse(Console.ReadLine());
+
+            decimal amount;
+            while (true){
+                Console.Write("Enter amount: ");
+                var input = Console.ReadLine();
+                try{
+                    amount = decimal.Parse(input);
+                    break;
+                }catch(FormatException){
+                    Console.WriteLine("Ivalid amount. Please enter a valid number.");
+                }   
+            }
             var transaction = new Transaction
             {
                 Id = transactions.Count + 1,
@@ -100,12 +110,35 @@ namespace PersonalFinanceTracker
 
         static void DeleteTransaction(List<Transaction> transactions)
         {
-            Console.Write("Enter the transaction ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var transaction = transactions.FirstOrDefault(t => t.Id == id);
-            if (transaction != null)
+            Console.Clear();
+            Console.WriteLine("Transactions:");
+            if( transactions.Count == 0){
+                Console.WriteLine("No existing transactions");
+                Console.ReadKey();
+                return;
+            }else{
+                foreach (var transaction in transactions)
+                {
+                    Console.WriteLine($"{transaction.Id}. {transaction.Description} - {(transaction.IsIncome ? "Income" : "Expense")}: ${transaction.Amount} on {transaction.Date}");
+                }
+            }
+
+            int id;
+            while (true)
             {
-                transactions.Remove(transaction);
+                Console.WriteLine("Enter the transaction ID to be deleted");
+                var input = Console.ReadLine();
+                if (input != null && int.TryParse(input, out id))
+                {
+                    break;
+                }
+                Console.WriteLine("Invalid ID! Please enter a valid ID number.");
+            }
+
+            var foundTransaction = transactions.FirstOrDefault(t => t.Id == id);
+            if (foundTransaction != null)
+            {
+                transactions.Remove(foundTransaction);
                 Console.WriteLine("Transaction deleted successfully!");
             }
             else

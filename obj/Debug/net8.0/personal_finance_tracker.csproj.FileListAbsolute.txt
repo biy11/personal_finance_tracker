@@ -26,3 +26,4 @@
 /home/bilal/C#/personal_finance_tracker/obj/Debug/net8.0/personal_finance_tracker.pdb
 /home/bilal/C#/personal_finance_tracker/obj/Debug/net8.0/personal_finance_tracker.genruntimeconfig.cache
 /home/bilal/C#/personal_finance_tracker/obj/Debug/net8.0/ref/personal_finance_tracker.dll
+/home/bilal/C#/personal_finance_tracker/obj/Debug/net8.0/personal_finance_tracker.sourcelink.json
