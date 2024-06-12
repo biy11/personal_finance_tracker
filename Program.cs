@@ -15,6 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace PersonalFinanceTracker
 {
@@ -32,7 +34,7 @@ namespace PersonalFinanceTracker
     {
         static void Main(string[] args)
         {
-            List<Transaction> transactions = new List<Transaction>(); // List to store the transactions.
+            List<Transaction> transactions = LoadTransactions(); // List to store the laoded the transactions.
 
             // Main loop to display and process user input.
             while (true)
@@ -68,6 +70,7 @@ namespace PersonalFinanceTracker
                         DeleteTransaction(transactions); // Delete a specific transaction.
                         break;
                     case "0": // Exit the application.
+                        SaveTransactions(transactions);
                         return;
                     default:
                         Console.WriteLine("Invalid choice, please try again."); // Handle invalid input.
@@ -175,6 +178,19 @@ namespace PersonalFinanceTracker
                 Console.WriteLine("Transaction not found.");
             }
             Console.ReadKey();
+        }
+
+        static void SaveTransactions(List<Transaction> transactions){
+            var json = JsonConvert.SerializeObject(transactions, Formatting.Indented);
+            File.WriteAllText("transaction.json", json);
+        }
+
+        static List<Transaction> LoadTransactions(){
+            if(File.Exists("transaction.json")){
+                var json = File.ReadAllText("transaction.json");
+                return JsonConvert.DeserializeObject<List<Transaction>>(json);
+            }
+            return new List<Transaction>();
         }
     }
 }
