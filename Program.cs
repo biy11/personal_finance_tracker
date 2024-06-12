@@ -1,25 +1,43 @@
-﻿using System;
+﻿/*
+ * @(#) program.cs 0.3 2024/06/12.
+ * 
+ * This is C# Consol Application for a personal finanace tracker.
+ *
+*/  
+
+/* 
+ * @aouthor Bilal [biy1]
+ * @version 0.1 - Initial development.
+ * @version 0.2 - Added error exeptions for invalid transaction amounts.
+ * @version 0.3 - Added comments.
+*/ 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PersonalFinanceTracker
 {
+    // Class to represent a financial transaction. 
     public class Transaction
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public decimal Amount { get; set; }
-        public DateTime Date { get; set; }
-        public bool IsIncome { get; set; }
+        public int Id { get; set; } // Unique identifier for the transaction.
+        public string Description { get; set; } // Description of the transaction.
+        public decimal Amount { get; set; } // Amount of money involved in the trasaction.
+        public DateTime Date { get; set; } // Date and time of the transaction.
+        public bool IsIncome { get; set; } // Flag to deteremine weather amount is income or expense.
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            List<Transaction> transactions = new List<Transaction>();
+            List<Transaction> transactions = new List<Transaction>(); // List to store the transactions.
+
+            // Main loop to display and process user input.
             while (true)
             {
+                // Menue for the finance tracker.
                 Console.Clear();
                 Console.WriteLine("Personal Finance Tracker");
                 Console.WriteLine("1. Add Income");
@@ -31,38 +49,40 @@ namespace PersonalFinanceTracker
                 Console.Write("Select an option: ");
                 var choice = Console.ReadLine();
 
+                // Switch cases for handleing user choice.
                 switch (choice)
                 {
                     case "1":
-                        AddTransaction(transactions, true);
+                        AddTransaction(transactions, true); // Add income to transaction.
                         break;
                     case "2":
-                        AddTransaction(transactions, false);
+                        AddTransaction(transactions, false); // Add expense transaction.
                         break;
                     case "3":
-                        ViewTransactions(transactions);
+                        ViewTransactions(transactions); // View all transactions.
                         break;
                     case "4":
-                        ViewBalance(transactions);
+                        ViewBalance(transactions); // View current balance.
                         break;
                     case "5":
-                        DeleteTransaction(transactions);
+                        DeleteTransaction(transactions); // Delete a specific transaction.
                         break;
-                    case "0":
+                    case "0": // Exit the application.
                         return;
                     default:
-                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.WriteLine("Invalid choice, please try again."); // Handle invalid input.
                         break;
                 }
             }
         }
 
+        // Method to add a transaction (income or expense).
         static void AddTransaction(List<Transaction> transactions, bool isIncome)
         {
             Console.Write("Enter description: ");
             var description = Console.ReadLine();
-
             decimal amount;
+            // Loop to ensure a valid amount is entered.
             while (true){
                 Console.Write("Enter amount: ");
                 var input = Console.ReadLine();
@@ -73,6 +93,7 @@ namespace PersonalFinanceTracker
                     Console.WriteLine("Ivalid amount. Please enter a valid number.");
                 }   
             }
+            // Create a new transaction and add it to the list.
             var transaction = new Transaction
             {
                 Id = transactions.Count + 1,
@@ -86,6 +107,7 @@ namespace PersonalFinanceTracker
             Console.ReadKey();
         }
 
+        // Method to view the current balance.
         static void ViewTransactions(List<Transaction> transactions)
         {
             Console.Clear();
@@ -97,6 +119,7 @@ namespace PersonalFinanceTracker
             Console.ReadKey();
         }
 
+        // Method to view the current balance.
         static void ViewBalance(List<Transaction> transactions)
         {
             var income = transactions.Where(t => t.IsIncome).Sum(t => t.Amount);
@@ -108,6 +131,7 @@ namespace PersonalFinanceTracker
             Console.ReadKey();
         }
 
+        // Method to delete a transaction.
         static void DeleteTransaction(List<Transaction> transactions)
         {
             Console.Clear();
@@ -124,6 +148,7 @@ namespace PersonalFinanceTracker
             }
 
             int id;
+            // Loop to esnure a valid transaction ID is entered.
             while (true)
             {
                 Console.WriteLine("Enter the transaction ID to be deleted");
@@ -134,7 +159,7 @@ namespace PersonalFinanceTracker
                 }
                 Console.WriteLine("Invalid ID! Please enter a valid ID number.");
             }
-
+            // Find and remove the transaction with the specified ID.
             var foundTransaction = transactions.FirstOrDefault(t => t.Id == id);
             if (foundTransaction != null)
             {
