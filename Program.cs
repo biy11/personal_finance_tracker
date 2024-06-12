@@ -22,7 +22,7 @@ namespace PersonalFinanceTracker
     public class Transaction
     {
         public int Id { get; set; } // Unique identifier for the transaction.
-        public string Description { get; set; } // Description of the transaction.
+        public string Description { get; set; } = string.Empty; // Description of the transaction. Set to empty.
         public decimal Amount { get; set; } // Amount of money involved in the trasaction.
         public DateTime Date { get; set; } // Date and time of the transaction.
         public bool IsIncome { get; set; } // Flag to deteremine weather amount is income or expense.
@@ -80,18 +80,22 @@ namespace PersonalFinanceTracker
         static void AddTransaction(List<Transaction> transactions, bool isIncome)
         {
             Console.Write("Enter description: ");
-            var description = Console.ReadLine();
+            var description = Console.ReadLine() ?? string.Empty;
             decimal amount;
             // Loop to ensure a valid amount is entered.
-            while (true){
+            while (true)
+            {
                 Console.Write("Enter amount: ");
                 var input = Console.ReadLine();
-                try{
-                    amount = decimal.Parse(input);
+                try
+                {
+                    amount = decimal.Parse(input ?? "0");
                     break;
-                }catch(FormatException){
-                    Console.WriteLine("Ivalid amount. Please enter a valid number.");
-                }   
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid amount. Please enter a valid number.");
+                }
             }
             // Create a new transaction and add it to the list.
             var transaction = new Transaction
