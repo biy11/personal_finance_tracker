@@ -1,5 +1,5 @@
 ﻿/*
- * @(#) program.cs 0.5 2024/06/13.
+ * @(#) program.cs 0.7 2024/06/13.
  * 
  * This is C# Consol Application for a personal finanace tracker.
  *
@@ -13,6 +13,7 @@
  * @version 0.4 - Added saving and loading of transactions.
  * @version 0.5 - Added a new attribute 'Category' to the Transaction class.
  * @version 0.6 - Added feature for viewing transactions by date.
+ * @version 0.7 - Added summary report generation for transactions.
 */ 
 
 using System;
@@ -51,6 +52,7 @@ namespace PersonalFinanceTracker
                 Console.WriteLine("3. View Transactions");
                 Console.WriteLine("4. View Balance");
                 Console.WriteLine("5. Delete Transaction");
+                Console.WriteLine("6. Balance Report");
                 Console.WriteLine("0. Exit");
                 Console.Write("Select an option: ");
                 var choice = Console.ReadLine();
@@ -73,6 +75,9 @@ namespace PersonalFinanceTracker
                         break;
                     case "5":
                         DeleteTransaction(transactions); // Delete a specific transaction.
+                        break;
+                    case "6":
+                        GenerateSummaryReport(transactions);
                         break;
                     case "0": // Exit the application.
                         SaveTransactions(transactions);
@@ -255,6 +260,31 @@ namespace PersonalFinanceTracker
 
             var filteredTransactions = transactions.Where(t => t.Date >= startDate && t.Date <= endDate).ToList();
             ViewTransactions(filteredTransactions);
+        }
+
+        static void GenerateSummaryReport(List<Transaction> transactions){
+            Console.Clear();
+            var totalIncome = transactions.Where(t => t.IsIncome).Sum(t => t.Amount);
+            var totalExpenses = transactions.Where(t => !t.IsIncome).Sum(t => t.Amount);
+            var balance = totalIncome - totalExpenses;
+
+            var biggestIncome = transactions.Where(t => t.IsIncome).OrderByDescending(t => t.IsIncome).FirstOrDefault();
+            var biggestExpense = transactions.Where(t => !t.IsIncome).OrderByDescending(t => t.IsIncome).FirstOrDefault();
+
+            Console.WriteLine("Summary Report:");
+            Console.WriteLine($"Total Income: ${totalIncome}");
+            Console.WriteLine($"Total Expenses: ${totalExpenses}");
+            Console.WriteLine($"Total balance: ${balance}");
+            
+            if(biggestIncome != null){
+                Console.WriteLine($"Biggest Income: ID - {biggestIncome.Id}, Description - {biggestIncome.Description}, Category - {biggestIncome.Category}, Amount - {biggestIncome.Amount}, Time - {biggestIncome.Date}");
+            }
+
+            if(biggestExpense != null){
+                Console.WriteLine($"Biggest Income: ID - {biggestExpense.Id}, Description - {biggestExpense.Description}, Category - {biggestExpense.Category}, Amount - {biggestExpense.Amount}, Time - {biggestExpense.Date}");
+            }
+            
+            Console.ReadKey();
         }
         
     }
