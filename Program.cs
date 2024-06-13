@@ -1,5 +1,5 @@
 ﻿/*
- * @(#) program.cs 0.3 2024/06/12.
+ * @(#) program.cs 0.5 2024/06/13.
  * 
  * This is C# Consol Application for a personal finanace tracker.
  *
@@ -10,6 +10,8 @@
  * @version 0.1 - Initial development.
  * @version 0.2 - Added error exeptions for invalid transaction amounts.
  * @version 0.3 - Added comments.
+ * @version 0.4 - Added saving and loading of transactions.
+ * @version 0.5 - Added a new attribute 'Category' to the Transaction class.
 */ 
 
 using System;
@@ -28,6 +30,7 @@ namespace PersonalFinanceTracker
         public decimal Amount { get; set; } // Amount of money involved in the trasaction.
         public DateTime Date { get; set; } // Date and time of the transaction.
         public bool IsIncome { get; set; } // Flag to deteremine weather amount is income or expense.
+        public string Category {get; set; } // Category type for transactions
     }
 
     class Program
@@ -84,6 +87,8 @@ namespace PersonalFinanceTracker
         {
             Console.Write("Enter description: ");
             var description = Console.ReadLine() ?? string.Empty;
+            Console.Write("Enter category: ");
+            var category = Console.ReadLine() ?? string.Empty;
             decimal amount;
             // Loop to ensure a valid amount is entered.
             while (true)
@@ -101,13 +106,15 @@ namespace PersonalFinanceTracker
                 }
             }
             // Create a new transaction and add it to the list.
+
             var transaction = new Transaction
             {
                 Id = transactions.Count + 1,
                 Description = description,
                 Amount = amount,
                 Date = DateTime.Now,
-                IsIncome = isIncome
+                IsIncome = isIncome,
+                Category = category
             };
             transactions.Add(transaction);
             Console.WriteLine("Transaction added successfully!");
@@ -121,7 +128,7 @@ namespace PersonalFinanceTracker
             Console.WriteLine("Transactions:");
             foreach (var transaction in transactions)
             {
-                Console.WriteLine($"{transaction.Id}. {transaction.Description} - {(transaction.IsIncome ? "Income" : "Expense")}: ${transaction.Amount} on {transaction.Date}");
+                Console.WriteLine($"{transaction.Id}. {transaction.Description} - {transaction.Category} - {(transaction.IsIncome ? "Income" : "Expense")}: ${transaction.Amount} on {transaction.Date}");
             }
             Console.ReadKey();
         }
@@ -180,11 +187,13 @@ namespace PersonalFinanceTracker
             Console.ReadKey();
         }
 
+        // Method to save transactions to a .json file.
         static void SaveTransactions(List<Transaction> transactions){
             var json = JsonConvert.SerializeObject(transactions, Formatting.Indented);
             File.WriteAllText("transaction.json", json);
         }
 
+        // Method to load transactions previously saved.
         static List<Transaction> LoadTransactions(){
             if(File.Exists("transaction.json")){
                 var json = File.ReadAllText("transaction.json");

@@ -4,6 +4,31 @@
     "Description": "100",
     "Amount": 100.0,
     "Date": "2024-06-13T00:52:07.7270354+01:00",
-    "IsIncome": true
+    "IsIncome": true,
+    "Category": null
+  },
+  {
+    "Id": 2,
+    "Description": "100",
+    "Amount": 1000000.0,
+    "Date": "2024-06-13T01:19:45.568506+01:00",
+    "IsIncome": true,
+    "Category": " Killing"
+  },
+  {
+    "Id": 3,
+    "Description": "big W",
+    "Amount": 100000000.0,
+    "Date": "2024-06-13T01:24:33.522703+01:00",
+    "IsIncome": true,
+    "Category": "GOAT"
+  },
+  {
+    "Id": 4,
+    "Description": "Debt",
+    "Amount": 10000000000000000.0,
+    "Date": "2024-06-13T01:25:04.1367536+01:00",
+    "IsIncome": false,
+    "Category": "Government"
   }
 ]
