@@ -8,14 +8,6 @@
     "Category": null
   },
   {
-    "Id": 2,
-    "Description": "100",
-    "Amount": 1000000.0,
-    "Date": "2024-06-13T01:19:45.568506+01:00",
-    "IsIncome": true,
-    "Category": " Killing"
-  },
-  {
     "Id": 3,
     "Description": "big W",
     "Amount": 100000000.0,
@@ -25,10 +17,74 @@
   },
   {
     "Id": 4,
-    "Description": "Debt",
-    "Amount": 10000000000000000.0,
-    "Date": "2024-06-13T01:25:04.1367536+01:00",
+    "Description": "",
+    "Amount": 1.0,
+    "Date": "2024-06-13T03:11:45.8972342+01:00",
+    "IsIncome": true,
+    "Category": ""
+  },
+  {
+    "Id": 5,
+    "Description": "10",
+    "Amount": 1000.0,
+    "Date": "2024-06-13T04:38:44.335343+01:00",
+    "IsIncome": true,
+    "Category": "200"
+  },
+  {
+    "Id": 5,
+    "Description": "12",
+    "Amount": 12.0,
+    "Date": "2024-06-13T04:42:59.240285+01:00",
     "IsIncome": false,
-    "Category": "Government"
+    "Category": ""
+  },
+  {
+    "Id": 6,
+    "Description": "wd",
+    "Amount": 0.0,
+    "Date": "2024-06-13T04:44:02.6004855+01:00",
+    "IsIncome": true,
+    "Category": ""
+  },
+  {
+    "Id": 7,
+    "Description": "gang",
+    "Amount": 100000.0,
+    "Date": "2024-06-13T04:44:52.019+01:00",
+    "IsIncome": true,
+    "Category": "businees"
+  },
+  {
+    "Id": 8,
+    "Description": "tax by the ops",
+    "Amount": 1000000.0,
+    "Date": "2024-06-13T04:45:27.9049477+01:00",
+    "IsIncome": false,
+    "Category": "Govy"
+  },
+  {
+    "Id": 9,
+    "Description": "e",
+    "Amount": 10.0,
+    "Date": "2024-06-13T04:53:24.7788353+01:00",
+    "IsIncome": true,
+    "Category": "10"
+  },
+  {
+    "Id": 10,
+    "Description": "10",
+    "Amount": 90.0,
+    "Date": "2024-06-13T04:54:05.1150255+01:00",
+    "IsIncome": true,
+    "Category": "10"
+  },
+  {
+    "Id": 11,
+    "Description": "10",
+    "Amount": 10000.0,
+    "Date": "2024-06-13T04:59:26.8444393+01:00",
+    "IsIncome": false,
+    "Category": "big money"
   }
 ]

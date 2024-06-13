@@ -12,6 +12,7 @@
  * @version 0.3 - Added comments.
  * @version 0.4 - Added saving and loading of transactions.
  * @version 0.5 - Added a new attribute 'Category' to the Transaction class.
+ * @version 0.6 - Added feature for viewing transactions by date.
 */ 
 
 using System;
@@ -30,7 +31,7 @@ namespace PersonalFinanceTracker
         public decimal Amount { get; set; } // Amount of money involved in the trasaction.
         public DateTime Date { get; set; } // Date and time of the transaction.
         public bool IsIncome { get; set; } // Flag to deteremine weather amount is income or expense.
-        public string Category {get; set; } // Category type for transactions
+        public string Category {get; set; } = string.Empty; // Category type for transactions
     }
 
     class Program
@@ -64,9 +65,10 @@ namespace PersonalFinanceTracker
                         AddTransaction(transactions, false); // Add expense transaction.
                         break;
                     case "3":
-                        ViewTransactions(transactions); // View all transactions.
+                        BalanceViewOption(transactions);  // View all transactions.
                         break;
                     case "4":
+                        Console.Clear();
                         ViewBalance(transactions); // View current balance.
                         break;
                     case "5":
@@ -85,10 +87,30 @@ namespace PersonalFinanceTracker
         // Method to add a transaction (income or expense).
         static void AddTransaction(List<Transaction> transactions, bool isIncome)
         {
-            Console.Write("Enter description: ");
-            var description = Console.ReadLine() ?? string.Empty;
-            Console.Write("Enter category: ");
-            var category = Console.ReadLine() ?? string.Empty;
+            // Loop to ensure a valid description input is given
+            string description;
+            while(true){
+                Console.Write("Enter description: ");
+                description = Console.ReadLine() ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(description)){
+                    Console.Clear();
+                    break;
+                }
+                Console.WriteLine("Description cannot be empty! Please enter a valid description.");
+
+            }
+            // Loop to ensure a valid category input is given
+            string category;
+            while(true){
+                Console.Write("Enter category: ");
+                category = Console.ReadLine() ?? string.Empty;
+                if(!string.IsNullOrWhiteSpace(category)){
+                    Console.Clear();
+                    break;
+                }
+                Console.WriteLine("Category cannot be empty! Please enter a valid category.");                
+            }
+
             decimal amount;
             // Loop to ensure a valid amount is entered.
             while (true)
@@ -98,6 +120,7 @@ namespace PersonalFinanceTracker
                 try
                 {
                     amount = decimal.Parse(input ?? "0");
+                    Console.Clear();
                     break;
                 }
                 catch (FormatException)
@@ -133,9 +156,26 @@ namespace PersonalFinanceTracker
             Console.ReadKey();
         }
 
+        static void BalanceViewOption(List<Transaction> transaction){
+            Console.Clear();
+            Console.WriteLine("Choose the view of transaction:");
+            Console.WriteLine("1 - View all transactions"); 
+            Console.WriteLine("2 - View by date");
+            Console.Write("Choice: ");
+            var choice =  Console.ReadLine();
+            if(choice == "1"){
+                ViewTransactions(transaction);
+            }else if(choice == "2"){
+                ViewTransactionsByDate(transaction);
+            }
+            else{
+                BalanceViewOption(transaction);
+            }
+        }
+
         // Method to view the current balance.
         static void ViewBalance(List<Transaction> transactions)
-        {
+        {            
             var income = transactions.Where(t => t.IsIncome).Sum(t => t.Amount);
             var expenses = transactions.Where(t => !t.IsIncome).Sum(t => t.Amount);
             var balance = income - expenses;
@@ -197,9 +237,25 @@ namespace PersonalFinanceTracker
         static List<Transaction> LoadTransactions(){
             if(File.Exists("transaction.json")){
                 var json = File.ReadAllText("transaction.json");
-                return JsonConvert.DeserializeObject<List<Transaction>>(json);
+                return JsonConvert.DeserializeObject<List<Transaction>>(json) ?? new List<Transaction>();
             }
             return new List<Transaction>();
         }
+
+        static void ViewTransactionsByDate(List<Transaction> transactions){
+            Console.Write("Enter start date (yyyy-mm-dd): ");
+            var startDateInput = Console.ReadLine();
+            DateTime startDate = startDateInput != null ? DateTime.Parse(startDateInput) : DateTime.MinValue;
+
+            Console.Write("Enter end date (yyyy-mm-dd): ");
+            var endDateInput = Console.ReadLine();
+            DateTime endDate = endDateInput != null ? DateTime.Parse(endDateInput) : DateTime.MaxValue;
+
+            endDate = endDate.AddDays(1).AddTicks(-1);
+
+            var filteredTransactions = transactions.Where(t => t.Date >= startDate && t.Date <= endDate).ToList();
+            ViewTransactions(filteredTransactions);
+        }
+        
     }
 }
